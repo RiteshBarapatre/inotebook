@@ -20,7 +20,7 @@ const JSON_WEB_TOKEN = "riteshisagood@$boy"
 const fetchuser = require('../middleware/fetchuser')
 
 //ROUTE 1 : Setting routes inside the localhost:8000/api/auth
-router.get(
+router.post(
   //Setting createuser route
   "/createuser",
   //Validating the name, email and password
@@ -32,20 +32,23 @@ router.get(
   ],
   //Making async callback funtion just like we create in the app.get
   async (req, res) => {
+    let success = false
     //Validating the result and storing the errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      success = false
       //If error comes then set status code 400 and return the json 
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({success, errors: errors.array() });
     }
     //Searching for the email in the collection named users
     let user = await User.findOne({ email: req.body.email });
 
     //If user found then do the below statement 
     if (user) {
+      success = false
       return res
         .status(400)
-        .json({ errors: "User with this email already exist !!!" });
+        .json({success, errors: "User with this email already exist !!!" });
     }
 
     //Salt is the addded string to the hash of the password to make it more secure
@@ -69,7 +72,8 @@ router.get(
 
     //Returning a jwt token
     const jwtData = jwt.sign(data,JSON_WEB_TOKEN)
-    res.json({"authtoken" : jwtData})
+    success = true
+    res.json({success, "authtoken" : jwtData})
   }
 );
 
@@ -79,6 +83,7 @@ router.post('/login',
   body('email','Enter a valid email').isEmail(),
   body('password','Password can not be blanked').exists(),
 ],async (req,res)=>{
+  let success = false
   const errors = validationResult(req);
     if (!errors.isEmpty()) {
       //If error comes then set status code 400 and return the json 
@@ -89,7 +94,8 @@ router.post('/login',
     try {
       let user = await User.findOne({email})
       if(!user){
-        return res.status(400).json({ errors: "Please try to login with correct credentials"})
+        success = false
+        return res.status(400).json({success, errors: "Please try to login with correct credentials"})
       }
 
       const passwordCompare =await bcrypt.compare(password,user.password)
@@ -105,9 +111,11 @@ router.post('/login',
       //Returning a jwt token
       //In jwt token we have the id of the object where the users information is stored is stored inside the token 
       const jwtData = jwt.sign(data,JSON_WEB_TOKEN)
-      res.json({"authtoken" : jwtData})
+      success = true
+      res.json({success, "authtoken" : jwtData})
     } catch (error) {
-      res.json({"error" : "Something is Wrong "})
+      success = false
+      res.json({success, "error" : "Something is Wrong "})
     }
 })
 

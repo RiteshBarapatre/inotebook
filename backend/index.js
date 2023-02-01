@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 
 //We create and connect the database in the other file and export is as module and here we import that.
 const connectToMongo = require('./db')
@@ -10,6 +11,9 @@ const app = express()
 
 //Setting the middleware for json data
 app.use(express.json())
+
+//Setting the CORS for express api call through browser
+app.use(cors())
 
 //Available Routes 
 //Importing the routes 
