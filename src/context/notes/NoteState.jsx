@@ -81,9 +81,23 @@ const NoteState = (props)=>{
           setNote(newNote)
           props.alertboot('Note Updated', 'warning')
         }
-        
+        const [mode, setMode] = useState('light')
+        const dark = ()=>{
+          console.log(mode.bgcolor)
+          if(mode === 'light'){
+            setMode('dark')
+            document.body.style.backgroundColor = '#181818'
+            document.body.style.color = 'white'
+            props.alertboot('Dark Mode Enabled','primary')
+          }else{
+            setMode('light')
+            document.body.style.backgroundColor = '#8899A6'
+            document.body.style.color = 'black'
+            props.alertboot('Light Mode Enabled','primary')
+          }
+        }
     return (
-        <NoteContext.Provider value={{note, setNote ,AddNote,DeleteNote,UpdateNote,FetchNote}}>
+        <NoteContext.Provider value={{note, setNote ,AddNote,DeleteNote,UpdateNote,FetchNote,dark,mode}}>
             {props.children}
         </NoteContext.Provider>
     )

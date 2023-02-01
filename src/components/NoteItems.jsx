@@ -11,7 +11,7 @@ export default function NoteItems(props) {
   return (
     <div className="col-md-3">
     <div className="card my-3">
-  <div className="card-body">
+  <div className="card-body" style={{color : 'black'}}>
   <span className="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">
     {note.tag}
   </span>
