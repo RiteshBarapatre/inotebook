@@ -19,7 +19,7 @@ export default function Navbar(props) {
     borderBottom: "2px solid rgb(5, 121, 203)",
   };
   return (
-    <nav className={`navbar navbar-expand-lg navbar-${mode} bg-${mode}`}>
+    <nav className={`navbar navbar-expand-lg navbar-${mode} bg-${mode}`} style={{position : 'sticky', top : '0'}}>
       <div className="container-fluid">
         <a className="navbar-brand" href="/">
           iNoteBook

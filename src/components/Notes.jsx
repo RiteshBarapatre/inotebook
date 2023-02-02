@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Notes(props) {
   const context = useContext(NoteContext);
-  const { note, FetchNote,UpdateNote } = context;
+  const { note, FetchNote,UpdateNote, DeleteAllNotes } = context;
   let navigate = useNavigate()
   const [updateNote, setUpdateNote] = useState({
     _id : "",
@@ -30,6 +30,9 @@ export default function Notes(props) {
     setUpdateNote(currentNote)
   };
 
+  const deleteall = ()=>{
+    DeleteAllNotes()
+  }
 
 const handleClick = (e)=>{
     e.preventDefault()
@@ -132,7 +135,8 @@ const Changed = (e)=>{
         </div>
       </div>
       <div className="row my-3">
-        <h2>Your Notes :</h2>
+        <h2>Your Notes : {note.length > 0 && <span><button className="btn btn-danger" onClick={deleteall}>Delete All Notes</button></span>}</h2>
+        
         <div className="container">
         {note.length===0 && "No Notes to Display"}
         </div>

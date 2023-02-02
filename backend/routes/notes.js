@@ -106,4 +106,19 @@ router.delete(
   }
 );
 
+//Route : 5 --> Deleting All Notes
+//Created by Me
+router.delete(
+  "/deleteallnotes",
+  fetchuser,
+  async (req, res) => {
+    try {
+      let note = await Notes.deleteMany({ user: req.user.id })
+      res.json({"Success" : "All Notes has been deleted"});
+    } catch (error) {
+        res.json({"error" : error})
+    }
+  }
+);
+
 module.exports = router;

@@ -96,8 +96,26 @@ const NoteState = (props)=>{
             props.alertboot('Light Mode Enabled','primary')
           }
         }
+
+        const DeleteAllNotes = async ()=>{
+
+          if(window.confirm("Do you want to delete all notes ??") === true){
+          const response = await fetch(`${host}/api/notes/deleteallnotes`,{
+            method : 'DELETE',
+            headers : {
+              'Content-Type' : "application/json",
+              'auth-token' : localStorage.getItem('token')
+            },
+          })
+          const json = await response.json()
+          setNote(json)
+        }
+        props.alertboot('All Notes Deleted', 'danger')
+        const deleteNotes = note
+        setNote(deleteNotes)
+        }
     return (
-        <NoteContext.Provider value={{note, setNote ,AddNote,DeleteNote,UpdateNote,FetchNote,dark,mode}}>
+        <NoteContext.Provider value={{note, setNote ,AddNote,DeleteNote,UpdateNote,FetchNote,dark,mode,DeleteAllNotes}}>
             {props.children}
         </NoteContext.Provider>
     )
